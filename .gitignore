@@ -145,3 +145,4 @@ docs/pages/versions/*/react-native/*.diff
 # iOS
 /ios/Pods
 /ios/build
+**/ios/.xcode.env.local
