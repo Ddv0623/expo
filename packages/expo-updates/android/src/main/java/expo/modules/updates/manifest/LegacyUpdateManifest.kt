@@ -117,6 +117,12 @@ class LegacyUpdateManifest private constructor(
       val runtimeVersion = manifest.getRuntimeVersion() ?: manifest.getExpoGoSDKVersion() ?: throw Exception("sdkVersion should not be null")
       val bundleUrl = Uri.parse(manifest.getBundleURL())
       val bundledAssets = manifest.getBundledAssets()
+
+      if(configuration.isRuntimeServerUrl)
+      {
+        bundleUrl = bundleUrl.buildUpon().authority(configuration.scopeKey).build()
+      }
+
       return LegacyUpdateManifest(
         manifest,
         configuration.updateUrl!!,

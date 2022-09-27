@@ -19,10 +19,9 @@ import expo.modules.updates.codesigning.CodeSigningConfiguration
  * class may be created over the lifetime of the app, but only one should be active at a time.
  */
 data class UpdatesConfiguration(
+  var isRuntimeServerUrl: Boolean,
   val isEnabled: Boolean,
   val expectsSignedManifest: Boolean,
-  val scopeKey: String?,
-  val updateUrl: Uri?,
   val sdkVersion: String?,
   val runtimeVersion: String?,
   val releaseChannel: String,

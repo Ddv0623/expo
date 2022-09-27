@@ -106,6 +106,40 @@ class UpdatesModule(
   }
 
   @ExpoMethod
+  fun setServerUrlAsync(url:String,promise: Promise){
+      var resultText:String = "0| ";
+      try
+      {
+          val updatesServiceLocal: UpdatesInterface? = updatesService
+          if (!updatesServiceLocal!!.configuration.isEnabled) {
+              promise.reject(
+                  "ERR_UPDATES_DISABLED",
+                  "You cannot check for updates when expo-updates is not enabled."
+              )
+              return
+          }
+          resultText += "1| ";
+
+
+              if (updatesServiceLocal != null && updatesServiceLocal!!.configuration != null)
+              {
+                  val newUri = Uri.parse(url)
+                  updatesServiceLocal.configuration.isRuntimeServerUrl = true
+                  updatesServiceLocal.configuration.scopeKey = newUri.host
+                  updatesServiceLocal.configuration.updateUrl =  Uri.parse(updatesServiceLocal.configuration.updateUrl.toString())
+                      .buildUpon().authority(newUri.host).build()
+              }
+              resultText += "2| ";
+              promise.resolve(url);
+
+      }
+      catch(e: IllegalStateException)
+      {
+          promise.reject( "setServerUrlAsync", "text:$resultText errors:$e")
+      }
+  }
+
+  @ExpoMethod
   fun reload(promise: Promise) {
     try {
       val updatesServiceLocal = updatesService
