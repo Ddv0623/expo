@@ -97,6 +97,16 @@ const manualUpdatesInstructions = isUsingExpoDevelopmentClient
   : 'To test manual updates, make a release build with `npm run ios --configuration Release` or ' +
     '`npm run android --variant Release`.';
 
+
+/**
+ * Omnia Feed additional method to set serverURl to load updates
+*/
+export async function setServerUrlAsync(url: string): Promise<boolean>
+{
+    const result = await ExpoUpdates.setServerUrlAsync(url);
+    return result;
+}
+
 /**
  * Instructs the app to reload using the most recently downloaded version. This is useful for
  * triggering a newly downloaded update to launch without the user needing to manually restart the

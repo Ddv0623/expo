@@ -7,10 +7,11 @@ import android.util.Log
 import expo.modules.updates.codesigning.CodeSigningConfiguration
 
 class UpdatesConfiguration private constructor (
+  var isRuntimeServerUrl: Boolean,
+  var scopeKey: String?,
+  var updateUrl: Uri?,
   val isEnabled: Boolean,
   val expectsSignedManifest: Boolean,
-  val scopeKey: String?,
-  val updateUrl: Uri?,
   val sdkVersion: String?,
   val runtimeVersion: String?,
   val releaseChannel: String,
