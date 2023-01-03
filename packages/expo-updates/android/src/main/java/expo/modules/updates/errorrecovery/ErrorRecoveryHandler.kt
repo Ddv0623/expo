@@ -5,8 +5,6 @@ import android.os.Looper
 import android.os.Message
 import expo.modules.updates.UpdatesConfiguration
 import expo.modules.updates.launcher.Launcher
-import expo.modules.updates.logging.UpdatesErrorCode
-import expo.modules.updates.logging.UpdatesLogger
 import java.lang.RuntimeException
 
 /**
@@ -38,7 +36,6 @@ import java.lang.RuntimeException
 internal class ErrorRecoveryHandler(
   looper: Looper,
   private val delegate: ErrorRecoveryDelegate,
-  private val logger: UpdatesLogger
 ) : Handler(looper) {
   private val pipeline = arrayListOf(
     Task.WAIT_FOR_REMOTE_UPDATE,
@@ -94,22 +91,11 @@ internal class ErrorRecoveryHandler(
 
   private fun runNextTask() {
     when (val nextTask = pipeline.removeAt(0)) {
-      Task.WAIT_FOR_REMOTE_UPDATE -> {
-        logger.info("UpdatesErrorRecovery: attempting to fetch a new update, waiting")
-        waitForRemoteUpdate()
-      }
-      Task.LAUNCH_NEW_UPDATE -> {
-        logger.info("UpdatesErrorRecovery: launching new update")
-        tryRelaunchFromCache()
-      } // only called after a new update is downloaded and added to the cache, so the implementation is equivalent
-      Task.LAUNCH_CACHED_UPDATE -> {
-        logger.info("UpdatesErrorRecovery: falling back to older update")
-        tryRelaunchFromCache()
-      }
-      Task.CRASH -> {
-        logger.error("UpdatesErrorRecovery: could not recover from error, crashing", UpdatesErrorCode.Unknown)
-        crash()
-      }
+      Task.WAIT_FOR_REMOTE_UPDATE -> waitForRemoteUpdate()
+      Task.LAUNCH_NEW_UPDATE -> tryRelaunchFromCache()
+       // only called after a new update is downloaded and added to the cache, so the implementation is equivalent
+      Task.LAUNCH_CACHED_UPDATE -> tryRelaunchFromCache()
+      Task.CRASH -> crash()
       else -> throw RuntimeException("ErrorRecoveryHandler cannot perform task $nextTask")
     }
   }

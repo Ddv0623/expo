@@ -27,8 +27,6 @@ import expo.modules.structuredheaders.StringItem
 import expo.modules.updates.codesigning.ValidationResult
 import expo.modules.updates.db.UpdatesDatabase
 import expo.modules.updates.db.entity.UpdateEntity
-import expo.modules.updates.logging.UpdatesErrorCode
-import expo.modules.updates.logging.UpdatesLogger
 import expo.modules.updates.manifest.*
 import java.security.cert.CertificateException
 
@@ -91,7 +89,6 @@ open class FileDownloader(context: Context, private val client: OkHttpClient) {
               callback.onSuccess(destination, hash)
             }
           } catch (e: Exception) {
-            logger.error("Failed to download file to destination $destination: ${e.localizedMessage}", UpdatesErrorCode.AssetsFailedToLoad, e)
             callback.onFailure(e)
           }
         }
@@ -481,7 +478,6 @@ open class FileDownloader(context: Context, private val client: OkHttpClient) {
                 }
               } else {
                 val message = "Manifest signature is invalid; aborting"
-                logger.error(message, UpdatesErrorCode.UpdateHasInvalidSignature)
                 callback.onFailure(
                   message,
                   Exception("Manifest signature is invalid")
@@ -506,7 +502,6 @@ open class FileDownloader(context: Context, private val client: OkHttpClient) {
       }
     } catch (e: Exception) {
       val message = "Failed to parse manifest data: ${e.localizedMessage}"
-      logger.error(message, UpdatesErrorCode.UpdateFailedToLoad, e)
       callback.onFailure(
         message,
         e
@@ -568,7 +563,6 @@ open class FileDownloader(context: Context, private val client: OkHttpClient) {
   ) {
     if (asset.url == null) {
       val message = "Could not download asset " + asset.key + " with no URL"
-      logger.error(message, UpdatesErrorCode.AssetsFailedToLoad)
       callback.onFailure(Exception(message), asset)
       return
     }
@@ -597,7 +591,6 @@ open class FileDownloader(context: Context, private val client: OkHttpClient) {
           }
         )
       } catch (e: Exception) {
-        logger.error("Failed to download asset ${asset.key}: ${e.localizedMessage}", UpdatesErrorCode.AssetsFailedToLoad, e)
         callback.onFailure(e, asset)
       }
     }

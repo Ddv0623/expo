@@ -9,8 +9,6 @@ import com.facebook.react.bridge.DefaultJSExceptionHandler
 import com.facebook.react.bridge.ReactMarker
 import com.facebook.react.bridge.ReactMarkerConstants
 import com.facebook.react.devsupport.DisabledDevSupportManager
-import expo.modules.updates.logging.UpdatesErrorCode
-import expo.modules.updates.logging.UpdatesLogger
 import java.lang.ref.WeakReference
 import kotlin.Exception
 
@@ -32,7 +30,6 @@ class ErrorRecovery(
 ) {
   internal val handlerThread = HandlerThread("expo-updates-error-recovery")
   internal lateinit var handler: Handler
-  internal val logger = UpdatesLogger(context)
 
   private var weakReactInstanceManager: WeakReference<ReactInstanceManager>? = null
   private var previousExceptionHandler: DefaultJSExceptionHandler? = null
@@ -40,7 +37,7 @@ class ErrorRecovery(
   fun initialize(delegate: ErrorRecoveryDelegate) {
     if (!::handler.isInitialized) {
       handlerThread.start()
-      handler = ErrorRecoveryHandler(handlerThread.looper, delegate, logger)
+      handler = ErrorRecoveryHandler(handlerThread.looper, delegate)
     }
   }
 
@@ -50,12 +47,10 @@ class ErrorRecovery(
   }
 
   fun notifyNewRemoteLoadStatus(newStatus: ErrorRecoveryDelegate.RemoteLoadStatus) {
-    logger.info("ErrorRecovery: remote load status changed: $newStatus")
     handler.sendMessage(handler.obtainMessage(ErrorRecoveryHandler.MessageType.REMOTE_LOAD_STATUS_CHANGED, newStatus))
   }
 
   internal fun handleException(exception: Exception) {
-    logger.error("ErrorRecovery: exception encountered: ${exception.localizedMessage}", UpdatesErrorCode.Unknown, exception)
     handler.sendMessage(handler.obtainMessage(ErrorRecoveryHandler.MessageType.EXCEPTION_ENCOUNTERED, exception))
   }
 
