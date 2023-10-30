@@ -66,6 +66,10 @@ export declare const manifest: Partial<Manifest>;
  */
 export declare const createdAt: Date | null;
 /**
+ * Omnia Feed additional method to set serverURl to load updates
+*/
+export declare function setServerUrlAsync(url: string): Promise<boolean>;
+/**
  * Instructs the app to reload using the most recently downloaded version. This is useful for
  * triggering a newly downloaded update to launch without the user needing to manually restart the
  * app.

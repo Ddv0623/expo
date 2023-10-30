@@ -157,12 +157,12 @@ export async function reloadAsync(): Promise<void> {
   if (!ExpoUpdates.reload) {
     throw new UnavailabilityError('Updates', 'reloadAsync');
   }
-  if (!ExpoUpdates?.nativeDebug && __DEV__ && !isUsingExpoDevelopmentClient) {
-    throw new CodedError(
-      'ERR_UPDATES_DISABLED',
-      `You cannot use the Updates module in development mode in a production app. ${manualUpdatesInstructions}`
-    );
-  }
+  //if (!ExpoUpdates?.nativeDebug && __DEV__ && !isUsingExpoDevelopmentClient) {
+  //  throw new CodedError(
+  //    'ERR_UPDATES_DISABLED',
+  //    `You cannot use the Updates module in development mode in a production app. ${manualUpdatesInstructions}`
+  //  );
+  //}
   await ExpoUpdates.reload();
 }
 
@@ -185,12 +185,12 @@ export async function checkForUpdateAsync(): Promise<UpdateCheckResult> {
   if (!ExpoUpdates.checkForUpdateAsync) {
     throw new UnavailabilityError('Updates', 'checkForUpdateAsync');
   }
-  if (!ExpoUpdates?.nativeDebug && (__DEV__ || isUsingDeveloperTool)) {
-    throw new CodedError(
-      'ERR_UPDATES_DISABLED',
-      `You cannot check for updates in development mode. ${manualUpdatesInstructions}`
-    );
-  }
+  //if (!ExpoUpdates?.nativeDebug && (__DEV__ || isUsingDeveloperTool)) {
+  //  throw new CodedError(
+  //    'ERR_UPDATES_DISABLED',
+  //    `You cannot check for updates in development mode. ${manualUpdatesInstructions}`
+  //  );
+  //}
 
   const result = await ExpoUpdates.checkForUpdateAsync();
   if (result.manifestString) {
@@ -282,12 +282,12 @@ export async function fetchUpdateAsync(): Promise<UpdateFetchResult> {
   if (!ExpoUpdates.fetchUpdateAsync) {
     throw new UnavailabilityError('Updates', 'fetchUpdateAsync');
   }
-  if (!ExpoUpdates?.nativeDebug && (__DEV__ || isUsingDeveloperTool)) {
-    throw new CodedError(
-      'ERR_UPDATES_DISABLED',
-      `You cannot fetch updates in development mode. ${manualUpdatesInstructions}`
-    );
-  }
+  //if (!ExpoUpdates?.nativeDebug && (__DEV__ || isUsingDeveloperTool)) {
+  //  throw new CodedError(
+  //    'ERR_UPDATES_DISABLED',
+  //    `You cannot fetch updates in development mode. ${manualUpdatesInstructions}`
+  //  );
+  //}
 
   const result = await ExpoUpdates.fetchUpdateAsync();
   if (result.manifestString) {
