@@ -1,0 +1,1 @@
+How to update new expo sdk for modified version expo-updates
