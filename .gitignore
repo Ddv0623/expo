@@ -154,3 +154,8 @@ docs/pages/versions/*/react-native/*.diff
 /ios/versioned-react-native/*/ReactNative/sdks/hermes-engine/destroot
 
 /.vs
+
+
+#Omnia Feed exclude all folder but the expo-updates
+*/
+!*/packages/expo-updates
